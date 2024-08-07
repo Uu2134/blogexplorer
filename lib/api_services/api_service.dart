@@ -5,25 +5,25 @@ import 'package:hive/hive.dart';
 
 class ApiService {
   final String url = 'https://intent-kit-16.hasura.app/api/rest/blogs';
-  final String adminSecret = '32qR4KmXOIpsGPQKMqEJHGJS27G5s7HdSKO3gdtQd2kv5e852SiYwWNfxkZOBuQ6'; // Provided secret
+  final String adminSecret = '32qR4KmXOIpsGPQKMqEJHGJS27G5s7HdSKO3gdtQd2kv5e852SiYwWNfxkZOBuQ6';
 
   Future<List<Blog>> fetchBlogs() async {
     try {
-      print("Using admin secret: $adminSecret"); // Debugging
+      print("Using admin secret: $adminSecret"); 
 
       final response = await http.get(Uri.parse(url), headers: {
         'x-hasura-admin-secret': adminSecret,
       });
 
       print("API Response Status Code: ${response.statusCode}");
-      print("API Response Body: ${response.body}"); // More detailed print
+      print("API Response Body: ${response.body}");
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonResponse = json.decode(response.body);
         final List<dynamic> blogsJson = jsonResponse['blogs'];
         final blogs = blogsJson.map((json) => Blog.fromJson(json)).toList();
 
-        // Save blogs to Hive
+        // save the blogs to hive
         final box = Hive.box<Blog>('blogs');
         await box.clear();
         await box.addAll(blogs);
@@ -35,7 +35,7 @@ class ApiService {
     } catch (e) {
       print("Error in fetchBlogs: $e");
 
-      // If there is an error, load blogs from Hive
+      // load the blog from hive in case of error
       final box = Hive.box<Blog>('blogs');
       return box.values.toList();
     }

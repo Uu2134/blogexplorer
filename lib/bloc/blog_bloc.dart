@@ -17,7 +17,7 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
   void _onFetchBlogs(FetchBlogs event, Emitter<BlogState> emit) async {
     emit(BlogLoading());
     try {
-      final blogs = await apiService.fetchBlogs(); // Await the future
+      final blogs = await apiService.fetchBlogs(); 
       emit(BlogLoaded(blogs, blogs));
       print("Blogs fetched successfully");
     } catch (e) {
