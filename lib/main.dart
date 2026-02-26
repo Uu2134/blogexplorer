@@ -11,7 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(BlogAdapter());
-  await Hive.openBox<Blog>('blogs');
+  await Hive.openBox<Blog>('blogs');  
   runApp(BlogExplorerApp());
 }
 
@@ -21,6 +21,8 @@ class BlogExplorerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+
       title: 'Blog Explorer',
       home: BlocProvider(
         create: (context) => BlogBloc(apiService: ApiService())..add(FetchBlogs()),
